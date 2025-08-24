@@ -29,7 +29,7 @@ Our mission is to deliver a **comprehensive testing framework** that integrates 
 | **Yasmin Ali Helmy** | Test Automation Engineer            | Yasmin.ali.helmy@gmail.com |
 | **Heba Srour**     | Manual Testing & Documentation Lead | hebasrour1988@gmail.com |
 | **Donia El Hussien** | Bug Tracking & Reporting Lead      | doniaelhussien@gmail.com |
-| **[Add Member 5]** | QA Research & Metrics Analyst        | [Add Email] |
+| **Bassant Adel** | QA Research & Metrics Analyst        | basantadel99@gmail.com |
 
 ---
 
