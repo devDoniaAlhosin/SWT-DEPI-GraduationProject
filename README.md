@@ -118,9 +118,6 @@ SWT-DEPI-GraduationProject/
 │   ├── pom.xml
 │   ├── testng.xml
 │   │
-├── Reports/
-│   ├── ExtentReports/
-│   ├── Screenshots/
 │
 └── README.md
 </pre>
