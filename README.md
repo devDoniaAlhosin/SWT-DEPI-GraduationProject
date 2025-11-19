@@ -72,6 +72,11 @@ Both <strong>manual and automated</strong> test scenarios cover positive, negati
     <td></td>
     <td>Yasmin.ali.helmy@gmail.com</td>
   </tr>
+  <tr>
+    <td><strong>Shaimaa Mansour</strong></td>
+    <td></td>
+    <td>shaimaamansour413@gmail.com</td>
+  </tr>
 
   <tr>
     <td><strong>Heba Srour</strong></td>
