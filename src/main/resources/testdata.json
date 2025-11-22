@@ -1,0 +1,24 @@
+{
+  "login": {
+    "valid": {
+      "email": "doniaalhosin@gmail.com",
+      "password": "1234@@@1234"
+    },
+    "invalidEmail": {
+      "email": "donia123@gmail.com",
+      "password": "1234@@@1234"
+    },
+    "invalidPassword": {
+      "email": "doniaalhosin@gmail.com",
+      "password": "wrongPass"
+    },
+    "invalidBoth": {
+      "email": "donia123@gmail.com",
+      "password": "invalidPassword"
+    },
+    "empty": {
+      "email": "",
+      "password": ""
+    }
+  }
+}
