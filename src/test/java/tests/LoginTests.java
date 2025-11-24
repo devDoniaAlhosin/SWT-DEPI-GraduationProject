@@ -116,6 +116,9 @@ public class LoginTests extends BaseTest {
                 "Login failed. Title is: " + driver.getTitle());
 
         LogUtil.info("Valid Login Test Passed");
+
+
+
         // ⭐ NEW: After login → logout from dropdown
         HomePage home = new HomePage(driver);
         home.clickLogoutDropdown();

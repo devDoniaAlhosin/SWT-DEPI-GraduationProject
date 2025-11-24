@@ -1,4 +1,5 @@
 {
+
   "login": {
     "valid": {
       "email": "doniaalhosin@gmail.com",
@@ -20,5 +21,9 @@
       "email": "",
       "password": ""
     }
+  },
+  "forgotPassword": {
+    "email": "donia@example.com"
   }
+
 }
