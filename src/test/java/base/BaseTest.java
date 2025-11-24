@@ -34,7 +34,6 @@ public class BaseTest {
 
     @AfterClass
     public void tearDown() {
-        // do NOT close browser if you want to keep it open
-        // driver.quit();
+         driver.quit();
     }
 }

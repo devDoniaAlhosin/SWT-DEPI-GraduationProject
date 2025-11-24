@@ -3,6 +3,10 @@
 
     <test name="OpenCart User Flow">
         <classes>
+            <!-- Registration Tests (Heba) -->
+            <class name="tests.RegistrationTests"/>
+
+            <!-- Authentication Tests -->
             <class name="tests.LoginTests"/>
             <class name="tests.ForgotPasswordTests"/>
         </classes>
