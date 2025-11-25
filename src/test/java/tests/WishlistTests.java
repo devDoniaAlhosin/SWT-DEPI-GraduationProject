@@ -3,76 +3,83 @@ package tests;
 import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.ProductPage;
 
+import pages.ProductPage;
 import pages.WishlistPage;
+import utils.LogUtil;
+import utils.TestDataUtil;
 
 public class WishlistTests extends BaseTest {
 
     @Test
-    public void addProductToWishlist() {
+    public void addProductToWishlist() throws InterruptedException {
+        doLogin();
+        LogUtil.info("=== TEST: Add Product To Wishlist ===");
+
         ProductPage product = new ProductPage(driver);
         WishlistPage wishlist = new WishlistPage(driver);
 
-        // Open any product page
-        product.openProductPage("MacBook");
+        String productName = TestDataUtil.getValue("test.products.iphone");
 
-        // Add to wishlist
+        product.openProductPage(productName);
         product.addToWishlist();
 
-        // Verify success
         Assert.assertTrue(product.isSuccessMessageDisplayed(),
-                "Success message not displayed after adding product to wishlist");
+                "❌ Success message not displayed!");
 
-        // Open wishlist
         wishlist.openWishlistPage();
 
-        // Verify product is added
-        Assert.assertTrue(wishlist.isProductInWishlist("MacBook"),
-                "Product not found in wishlist");
+        Assert.assertTrue(wishlist.isProductInWishlist(productName),
+                "❌ Product NOT found in wishlist!");
     }
+
 
     @Test
     public void removeProductFromWishlist() {
+
+        LogUtil.info("=== TEST: Remove Product From Wishlist ===");
+
         ProductPage product = new ProductPage(driver);
         WishlistPage wishlist = new WishlistPage(driver);
 
-        // Add a product first
-        product.openProductPage("iPhone");
+        String productName = TestDataUtil.getValue("test.products.macbook");
+
+        product.openProductPage(productName);
         product.addToWishlist();
 
-        // Open wishlist
         wishlist.openWishlistPage();
-        Assert.assertTrue(wishlist.isProductInWishlist("iPhone"),
-                "Product should be in wishlist before removing");
+        Assert.assertTrue(wishlist.isProductInWishlist(productName));
 
-        // Remove product
-        wishlist.removeItem("iPhone");
+        wishlist.removeItem(productName);
 
-        // Verify removed
-        Assert.assertFalse(wishlist.isProductInWishlist("iPhone"),
-                "Product still appears in wishlist after removal");
+        Assert.assertTrue(wishlist.isSuccessMessageDisplayed(),
+                "❌ No success message after removal!");
+
+        wishlist.openWishlistPage(); // avoid redirect
+        Assert.assertFalse(wishlist.isProductInWishlist(productName),
+                "❌ Product still appears after removal!");
     }
+
 
     @Test
     public void addWishlistItemToCart() {
+
+        LogUtil.info("=== TEST: Add Wishlist Item To Cart ===");
+
         ProductPage product = new ProductPage(driver);
         WishlistPage wishlist = new WishlistPage(driver);
 
-        // Add product to wishlist
-        product.openProductPage("Canon");
+        String productName = TestDataUtil.getValue("test.products.iphone");
+
+        product.openProductPage(productName);
         product.addToWishlist();
 
-        // Open wishlist
         wishlist.openWishlistPage();
-        Assert.assertTrue(wishlist.isProductInWishlist("Canon"),
-                "Product not added to wishlist");
+        Assert.assertTrue(wishlist.isProductInWishlist(productName));
 
-        // Add to cart from wishlist
-        wishlist.addItemToCart("Canon");
+        wishlist.addItemToCart(productName);
 
-        // Verify success message
         Assert.assertTrue(wishlist.isSuccessMessageDisplayed(),
-                "Success message for adding to cart from wishlist not displayed");
+                "❌ Success message for add-to-cart NOT shown!");
     }
 }

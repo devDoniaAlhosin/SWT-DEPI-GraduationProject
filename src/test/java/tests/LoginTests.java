@@ -106,8 +106,6 @@ public class LoginTests extends BaseTest {
         login.enterEmail(TestDataUtil.getValue("login.valid.email"));
         login.enterPassword(TestDataUtil.getValue("login.valid.password"));
         login.clickLogin();
-
-        // Wait for page navigation
         Thread.sleep(1500);
 
         LogUtil.info("Page Title After Login: " + driver.getTitle());
@@ -117,9 +115,6 @@ public class LoginTests extends BaseTest {
 
         LogUtil.info("Valid Login Test Passed");
 
-
-
-        // ⭐ NEW: After login → logout from dropdown
         HomePage home = new HomePage(driver);
         home.clickLogoutDropdown();
 

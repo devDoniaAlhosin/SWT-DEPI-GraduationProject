@@ -3,12 +3,113 @@
 
     <test name="OpenCart User Flow">
         <classes>
-            <!-- Registration Tests (Heba) -->
+            <!--
+                 ===========================================
+                 FLOW FOR RegistrationTests
+                 ===========================================
+                 1. Start always LOGGED OUT.
+                    - RegistrationTests sets requireLogin = false.
+                    - No login should happen automatically.
+                    - No cookies should be present.
+
+                 2. Test execution order MUST be:
+                       a. RegisterWithEmptyFields
+                       b. testRegistrationWithoutPrivacyPolicy
+                       c. Register_successfully
+                 ===========================================
+                 -->
             <class name="tests.RegistrationTests"/>
 
-            <!-- Authentication Tests -->
-            <class name="tests.LoginTests"/>
+            <!--
+              ================ LoginTests FLOW =================
+              1. All login tests must start LOGGED OUT.
+              2. Negative login tests:
+                    - invalid email
+                    - invalid password
+                    - invalid both
+                    - empty fields
+                 All require the user to be logged out.
+              3. Valid login test MUST run LAST.
+              4. After successful login:
+                    - LOG OUT using logout dropdown
+              ===================================================
+              -->
+             <class name="tests.LoginTests"/>
+
+            <!--
+                ======================== ForgotPasswordTests FLOW ========================
+                1. All Forgot Password tests must ALWAYS run while LOGGED OUT.
+                   - The Forgot Password page is only available when the user is NOT logged in.
+                   - If a previous test logged the user in, cookies must be cleared before this test.
+
+                2. Test Sequence:
+                      Step 1: Navigate to Login Page.
+                      Step 2: Click "Forgotten Password" link.
+                      Step 3: Verify that the page title contains "Forgot Your Password".
+                      Step 4: Enter the email from testdata.json.
+                      Step 5: Click Continue to request password reset.
+                      Step 6: Validate success alert message (redirected back to Login page).
+
+                3. Notes:
+                   - This test must NOT perform login.
+                   - This test must NOT leave the user logged in.
+                   - No session persistence should occur.
+                   - This test should not depend on any other class or test.
+
+                4. Result:
+                   - A successful test confirms that the reset request was processed.
+                =========================================================================
+                -->
             <class name="tests.ForgotPasswordTests"/>
+
+
+            <!--
+            =======================================
+            FLOW FOR ProductTests
+            =======================================
+            1. Start NOT logged in.
+            2. verifyProductDetails → No login needed.
+            3. addProductToCart → No login needed.
+            4. addProductToWishlist:
+                  - If NOT logged in → doLogin() is executed
+                  - Add product to wishlist
+                  - Open wishlist page
+                  - Validate product exists
+            5. End of ProductTests → user may remain logged in.
+               (WishlistTests will handle login separately.)
+            =======================================
+            -->
+            <class name="tests.ProductTests"/>
+
+            <!--
+                =======================================
+                FLOW FOR WishlistTests
+                =======================================
+                1. Start new state (may be logged in or logged out).
+                2. Before EACH wishlist test:
+                      - Force clean session:
+                            driver.manage().deleteAllCookies();
+                            driver.navigate().refresh();
+                      - Perform doLogin() to ensure a fresh session.
+
+                3. Execute wishlist scenarios:
+                      - Validate items exist in wishlist
+                      - Add to wishlist
+                      - Remove from wishlist
+                      - Add wishlist item to cart
+                      - Verify success messages
+
+                4. After each test, cookies are cleared automatically
+                   if you use cleanup logic.
+
+                This ensures:
+                - No leftover login from ProductTests
+                - No redirect issues
+                - No stale wishlist session errors
+                =======================================
+                -->
+            <class name="tests.WishlistTests"/>
+
         </classes>
     </test>
 

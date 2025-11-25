@@ -1,5 +1,28 @@
 {
-
+  "app": {
+    "base": {
+      "url": "http://localhost/opencartproject/"
+    }
+  },
+  "registration": {
+    "valid": {
+      "firstname": "Heba",
+      "lastname": "Srour",
+      "email": "heba.srour@test.com",
+      "password": "password123"
+    },
+    "invalid": {
+      "firstname": "",
+      "lastname": "",
+      "email": "",
+      "password": ""
+    },
+    "privacyPolicy": {
+      "firstname": "John",
+      "lastname": "Doe",
+      "password": "123456"
+    }
+  },
   "login": {
     "valid": {
       "email": "doniaalhosin@gmail.com",
@@ -23,7 +46,13 @@
     }
   },
   "forgotPassword": {
-    "email": "donia@example.com"
+    "email": "doniaalhosin@gmail.com"
+  },
+  "test": {
+    "products": {
+      "iphone": "iPhone",
+      "macbook": "MacBook"
+    }
   }
 
 }

@@ -12,16 +12,16 @@ import java.util.List;
 
 public class RegistrationTests extends BaseTest {
 
-@Test
+    @Test(priority = 3)
     public void Register_successfully(){
-    RegisterPage register_page=new RegisterPage(driver);
-    register_page.Navigate_to_register();
-    String randomEmail = "user" + System.currentTimeMillis() + "@test.com";
-    register_page.register("Heba", "Srour", randomEmail, "password123");
+        RegisterPage register_page=new RegisterPage(driver);
+        register_page.Navigate_to_register();
+        String randomEmail = "user2" + System.currentTimeMillis() + "@test.com";
+        register_page.register("Heba", "Srour", randomEmail, "password123");
 
-}
+    }
 
-@Test
+    @Test(priority = 1)
     public void RegisterWithEmptyFields() {
 
         RegisterPage reg = new RegisterPage(driver);
@@ -55,10 +55,10 @@ public class RegistrationTests extends BaseTest {
         System.out.println("❌ Missing or invalid fields: " + missingFields);
 
 
-}
+    }
 
 
-    @Test
+    @Test(priority = 2)
     public void testRegistrationWithoutPrivacyPolicy() {
         RegisterPage regPage=new RegisterPage(driver);
         regPage.Navigate_to_register();
@@ -73,6 +73,3 @@ public class RegistrationTests extends BaseTest {
 
 
 }
-
-
-

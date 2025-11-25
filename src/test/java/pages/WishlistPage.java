@@ -1,47 +1,75 @@
 package pages;
 
-import base.BaseTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class WishlistPage extends BaseTest {
+import java.time.Duration;
+import java.util.List;
+
+public class WishlistPage {
 
     private WebDriver driver;
 
-    // Constructor
     public WishlistPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Locators
-    private By wishlistLink = By.linkText("Wish List"); // رابط صفحة الـ Wishlist
-    private By productNameInWishlist = By.cssSelector(".table-responsive td a"); // اسم المنتج
-    private By successMessageLocator = By.cssSelector(".alert-success"); // رسالة النجاح
+    // TOP NAV wishlist button
+    private By wishlistNavLink = By.id("wishlist-total");
 
-    // Methods
-    public void openWishlistPage() {
-        driver.findElement(wishlistLink).click();
+    private By productNames = By.cssSelector("tbody tr td:nth-child(2) a");
+    private By successMessage = By.cssSelector(".alert-success");
+
+    private WebDriverWait getWait() {
+        return new WebDriverWait(driver, Duration.ofSeconds(7));
     }
 
-    public boolean isProductInWishlist(String productName) {
+    public void openWishlistPage() {
+
+        WebElement wishlistBtn = getWait().until(
+                ExpectedConditions.elementToBeClickable(wishlistNavLink)
+        );
+
         try {
-            return driver.findElement(productNameInWishlist).getText().equals(productName);
+            wishlistBtn.click();
         } catch (Exception e) {
-            return false;
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", wishlistBtn);
         }
     }
 
-    public void removeItem(String productName) {
-        String removeButtonXpath = "//a[text()='" + productName + "']/../following-sibling::td/button[@data-original-title='Remove']";
-        driver.findElement(By.xpath(removeButtonXpath)).click();
+    public boolean isProductInWishlist(String productName) {
+        List<WebElement> items = driver.findElements(productNames);
+
+        for (WebElement item : items) {
+            if (item.getText().equalsIgnoreCase(productName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
+    public void removeItem(String productName) {
+        String removeXpath = "//a[text()='" + productName + "']/ancestor::tr//a[contains(@href,'wishlist.remove')]";
+
+        WebElement removeBtn = getWait().until(
+                ExpectedConditions.elementToBeClickable(By.xpath(removeXpath))
+        );
+
+        try {
+            removeBtn.click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", removeBtn);
+        }
+    }
+
+
     public void addItemToCart(String productName) {
-        String addToCartXpath = "//a[text()='" + productName + "']/../following-sibling::td/button[@data-original-title='Add to Cart']";
-        driver.findElement(By.xpath(addToCartXpath)).click();
+        String addXpath = "//a[text()='" + productName + "']/../../td[last()]//button[contains(@form,'form-product')]";
+        driver.findElement(By.xpath(addXpath)).click();
     }
 
     public boolean isSuccessMessageDisplayed() {
-        return driver.findElement(successMessageLocator).isDisplayed();
+        return getWait().until(ExpectedConditions.visibilityOfElementLocated(successMessage)).isDisplayed();
     }
 }

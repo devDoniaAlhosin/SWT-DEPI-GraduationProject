@@ -36,11 +36,19 @@ public class RegisterPage {
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
     }
+    private void scrollTo(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView({block:'center'});",
+                element
+        );
+    }
 
     /// /// Actions/// ////
     ///           ///
     public void register(String firstname, String lastname, String email, String password) {
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(FirstName));
 
         driver.findElement(FirstName).sendKeys(firstname);
@@ -48,33 +56,22 @@ public class RegisterPage {
         driver.findElement(Email).sendKeys(email);
         driver.findElement(Password).sendKeys(password);
 
-        // Fix privacy checkbox click
         WebElement privacy = driver.findElement(Privacy_check);
 
-// Scroll to the checkbox
-        ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView(true);",
-                privacy
-        );
+        scrollTo(privacy);
+        wait.until(ExpectedConditions.elementToBeClickable(privacy));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", privacy);
 
-// Wait until it's clickable
-        wait.until(ExpectedConditions.elementToBeClickable(Privacy_check));
+        WebElement continueBtn = driver.findElement(Continue_button);
+        scrollTo(continueBtn);
 
-// Force click with JS
-        ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].click();",
-                privacy
-        );
-
-// Scroll to Continue button
-        ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView({block:'center'});",
-                driver.findElement(Continue_button)
-        );
-
-
-        driver.findElement(Continue_button).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(continueBtn)).click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueBtn);
+        }
     }
+
 
 
     public void Navigate_to_register(){
@@ -82,7 +79,9 @@ public class RegisterPage {
     }
 
     public void registerWithPrivacyPolicyNotChecked(String firstname, String lastname, String email, String password) {
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(FirstName));
 
         driver.findElement(FirstName).sendKeys(firstname);
@@ -90,31 +89,40 @@ public class RegisterPage {
         driver.findElement(Email).sendKeys(email);
         driver.findElement(Password).sendKeys(password);
 
-        // Fix privacy checkbox click
-        WebElement privacy = driver.findElement(Privacy_check);
+        WebElement continueBtn = driver.findElement(Continue_button);
+        scrollTo(continueBtn);
 
-       // Scroll to Continue button
-        ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView({block:'center'});",
-                driver.findElement(Continue_button)
-        );
-       // Wait until it's clickable
-       wait.until(ExpectedConditions.elementToBeClickable(Privacy_check));
-
-        driver.findElement(Continue_button).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(continueBtn)).click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueBtn);
+        }
     }
+
 
 
 
 
     public void clickContinue() {
-        WebElement btn = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(Continue_button));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement btn = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//button[@type='submit' and contains(@class,'btn-primary')]")
+        ));
 
-        try { btn.click(); }
-        catch (Exception e) { ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'}); arguments[0].click();", btn); }
+        // Move viewport slightly above the button to avoid being covered by footer
+        ((JavascriptExecutor) driver).executeScript(
+                "window.scrollTo(0, arguments[0].getBoundingClientRect().top + window.pageYOffset - 150);",
+                btn
+        );
+
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        }
     }
+
+
 
 
 
