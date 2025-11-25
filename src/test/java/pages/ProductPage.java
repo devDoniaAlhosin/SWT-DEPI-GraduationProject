@@ -24,6 +24,8 @@ public class ProductPage {
     private By productPriceLocator = By.cssSelector(".list-unstyled h2, .price");
     private By productImageLocator = By.cssSelector("img.img-fluid, img.img-thumbnail");
 
+    By successAlert = By.cssSelector(".alert-success a[href*='route=checkout/cart']");
+
     private WebDriverWait getWait() {
         return new WebDriverWait(driver, Duration.ofSeconds(8));
     }
@@ -77,5 +79,10 @@ public class ProductPage {
     public boolean isSuccessMessageDisplayed() {
         getWait().until(ExpectedConditions.visibilityOfElementLocated(successMessage));
         return driver.findElement(successMessage).isDisplayed();
+    }
+
+//   Checkout && Order History
+    public void clickSuccessCartLink() {
+        driver.findElement(successAlert).click();
     }
 }

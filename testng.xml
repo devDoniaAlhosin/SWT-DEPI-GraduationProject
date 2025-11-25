@@ -110,6 +110,25 @@
                 -->
             <class name="tests.WishlistTests"/>
 
+            <class name="tests.CheckoutTest"/>
+            <!--
+                 * Test Flow:
+                    * 1. Open site (handled in BaseTest @BeforeClass)
+                    * 2. Perform login using doLogin() from BaseTest
+                    * 3. Ensure login redirects to My Account page
+                    * 4. From My Account sidebar → click "Order History"
+                    * 5. Load OrderHistoryPage
+                    * 6. Validate:
+                           - The page title is "Orders"
+                           - The message "You have not made any previous orders!" is displayed
+                        7. End (browser closes in @AfterClass)
+               -->
+            <class name="tests.OrderHistoryTest"/>
+
+
+
+
+
         </classes>
     </test>
 

@@ -3,6 +3,7 @@ package tests;
 import base.BaseTest;
 import pages.HomePage;
 import pages.LoginPage;
+import utils.GlobalData;
 import utils.TestDataUtil;
 import utils.LogUtil;
 
@@ -103,7 +104,13 @@ public class LoginTests extends BaseTest {
 
         LoginPage login = goToLoginPage();
 
-        login.enterEmail(TestDataUtil.getValue("login.valid.email"));
+        String emailToUse = GlobalData.LAST_REGISTERED_EMAIL;
+
+        if (emailToUse == null) {
+            emailToUse = TestDataUtil.getValue("login.valid.email"); // fallback
+        }
+        login.enterEmail(emailToUse);
+
         login.enterPassword(TestDataUtil.getValue("login.valid.password"));
         login.clickLogin();
         Thread.sleep(1500);

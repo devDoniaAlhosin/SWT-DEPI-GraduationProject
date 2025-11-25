@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import java.io.InputStream;
 
 public class TestDataUtil {
 
@@ -11,11 +12,21 @@ public class TestDataUtil {
     static {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            testData = mapper.readTree(new File("src/main/resources/testdata.json"));
+
+            InputStream is = TestDataUtil.class.getClassLoader()
+                    .getResourceAsStream("testdata.json");
+
+            if (is == null) {
+                throw new RuntimeException("❌ testdata.json NOT FOUND under src/main/resources/");
+            }
+
+            testData = mapper.readTree(is);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("❌ Failed to read testdata.json", e);
         }
     }
+
 
     // Path example: login.valid.email
     public static String getValue(String path) {

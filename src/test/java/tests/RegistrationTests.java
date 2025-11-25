@@ -17,7 +17,9 @@ public class RegistrationTests extends BaseTest {
         RegisterPage register_page=new RegisterPage(driver);
         register_page.Navigate_to_register();
         String randomEmail = "user2" + System.currentTimeMillis() + "@test.com";
+        utils.GlobalData.LAST_REGISTERED_EMAIL = randomEmail;
         register_page.register("Heba", "Srour", randomEmail, "password123");
+
 
     }
 
