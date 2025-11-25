@@ -134,6 +134,45 @@
             <class name="tests.CartTests"/>
 
 
+            <!--
+            /**
+                 * SEARCH TESTS – FLOW SUMMARY
+                 *
+                 * This suite verifies the end-to-end behavior of the Search feature in OpenCart.
+                 *
+                 * 1. Basic Search:
+                 *    - Search by product name, category name, partial names.
+                 *    - Validate handling of invalid, numeric, alphanumeric, special character, and empty inputs.
+                 *    - Verify search via Enter key.
+                 *    - Validate case-insensitive and whitespace-tolerant behavior.
+                 *
+                 * 2. Search Input Behavior:
+                 *    - Verify placeholder text.
+                 *    - Validate autocomplete visibility logic.
+                 *
+                 * 3. Results and Layout:
+                 *    - Confirm search results appear when expected.
+                 *    - Validate product layout visibility and structure.
+                 *
+                 * 4. Performance:
+                 *    - Measure search execution time and ensure it completes within acceptable limits.
+                 *
+                 * 5. Advanced Search:
+                 *    - Enable “search in descriptions” and verify matching results.
+                 *
+                 * 6. Sorting:
+                 *    - Sort results by name, price, and rating.
+                 *    - Validate that results are ordered correctly after sorting.
+                 *
+                 * 7. Show Count (Limit):
+                 *    - Change “Show” dropdown (e.g., 50).
+                    *    - Verify that the URL updates with the correct limit parameter.
+                 */
+
+            -->
+            <class name="tests.SearchTests"/>
+
+
 
 
 
