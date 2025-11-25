@@ -125,6 +125,14 @@
                -->
             <class name="tests.OrderHistoryTest"/>
 
+            <!--
+                    1. testAddProductToCart: Add product → verify success.
+                    2. testMiniCartAndClickViewCart: Add product → open mini cart → view cart → verify URL.
+                    3. testUpdateQuantity: Add product → go to cart → update quantity → verify success.
+                    5. testRemoveProduct: Add product → go to cart → remove item → verify cart empty.
+            -->
+            <class name="tests.CartTests"/>
+
 
 
 
