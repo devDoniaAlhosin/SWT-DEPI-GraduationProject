@@ -1,10 +1,10 @@
 package tests;
 
-import base.BaseTest;
+import base.BaseTestForCart;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class CartTests extends BaseTest {
+public class CartTests extends BaseTestForCart {
 
     @Test
     public void testAddProductToCart() {
