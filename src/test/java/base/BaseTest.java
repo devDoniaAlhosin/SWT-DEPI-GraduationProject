@@ -8,6 +8,8 @@ import org.testng.annotations.*;
 
 import pages.HomePage;
 import pages.LoginPage;
+import pages.RegisterPage;
+import utils.GlobalData;
 import utils.LogUtil;
 import utils.TestDataUtil;
 
@@ -38,22 +40,66 @@ public class BaseTest {
         HomePage home = new HomePage(driver);
         home.clickLogin();
 
-        LogUtil.info("Entering login credentials...");
+        LogUtil.info("Preparing login credentials...");
         LoginPage login = new LoginPage(driver);
 
-        login.enterEmail(TestDataUtil.getValue("login.valid.email"));
-        login.enterPassword(TestDataUtil.getValue("login.valid.password"));
+        // Load email: first try from GlobalData
+        String emailToUse = GlobalData.LAST_REGISTERED_EMAIL;
+
+        // fallback if missing
+        if (emailToUse == null || emailToUse.isEmpty()) {
+            emailToUse = TestDataUtil.getValue("login.valid.email");
+        }
+
+        String passwordToUse = TestDataUtil.getValue("login.valid.password");
+
+        // ---- TRY LOGIN ----
+        login.enterEmail(emailToUse);
+        login.enterPassword(passwordToUse);
         login.clickLogin();
 
         Thread.sleep(1000);
 
-        if (!driver.getTitle().contains("My Account")) {
-            LogUtil.error("Login failed. Current title: " + driver.getTitle());
-            throw new AssertionError("Login failed.");
+        // Check if login failed
+        if (driver.getTitle().contains("My Account")) {
+            LogUtil.info("Login successful: " + emailToUse);
+            return;
         }
 
-        LogUtil.info("Login successful.");
+        LogUtil.warn("Login failed → Trying to register user automatically...");
+
+        // ---- AUTO-REGISTER ----
+        RegisterPage reg = new RegisterPage(driver);
+        reg.Navigate_to_register();
+
+        // generate new email if the current one is invalid
+        if (!emailToUse.contains("@")) {
+            emailToUse = "auto" + System.currentTimeMillis() + "@test.com";
+        }
+
+        GlobalData.LAST_REGISTERED_EMAIL = emailToUse;
+
+        reg.register("Auto", "User", emailToUse, passwordToUse);
+
+        Thread.sleep(1500);
+
+        // ---- LOGIN AGAIN AFTER REGISTRATION ----
+        home.clickLogoutDropdown();  // logout after auto-registration (OpenCart requirement)
+        home.clickLogin();
+
+        login.enterEmail(emailToUse);
+        login.enterPassword(passwordToUse);
+        login.clickLogin();
+
+        Thread.sleep(1500);
+
+        if (!driver.getTitle().contains("My Account")) {
+            throw new AssertionError("Auto-Register + Login failed.");
+        }
+
+        LogUtil.info("Auto-Register + Login SUCCESS using: " + emailToUse);
     }
+
 
 
     /**

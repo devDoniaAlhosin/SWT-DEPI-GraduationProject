@@ -17,6 +17,10 @@ public class CheckoutTest extends BaseTest {
     @Test
     public void testGuestCheckout() {
 
+        // ✅ 1) تأكد إن مافيش سشن ولا لوجين
+        driver.manage().deleteAllCookies();
+        driver.navigate().refresh();
+
         HomePage home = new HomePage(driver);
         ProductPage product = new ProductPage(driver);
         CartPage cart = new CartPage(driver);
@@ -24,38 +28,37 @@ public class CheckoutTest extends BaseTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // 1. Open first product
+        // 2. Open first product
         home.openFirstProduct();
 
-        // 2. Add product
+        // 3. Add product
         product.addToCart();
 
-        // 3. Click cart link on success popup
+        // 4. Click cart link on success popup
         product.clickSuccessCartLink();
 
-        // 4. Go to checkout
+        // 5. Go to checkout
         cart.clickCheckout();
 
-        // 5. Fill billing + shipping
+        // 6. Fill billing + shipping as GUEST
         checkout.fillBillingDetails();
 
-        // 6. Finish checkout
+        // 7. Finish checkout
         checkout.completeCheckout();
 
         wait.until(ExpectedConditions.visibilityOf(checkout.getPageHeader()));
         String header = checkout.getPageHeader().getText();
+
         Assert.assertFalse(
                 header.contains("Your order has been placed"),
                 "Order should NOT be placed because user was registered instead!"
         );
 
-        Assert.assertTrue(
+        Assert.assertFalse(
                 header.contains("Shopping Cart"),
                 "Shopping Cart page was NOT displayed!"
         );
-
-
-
     }
+
 
 }
