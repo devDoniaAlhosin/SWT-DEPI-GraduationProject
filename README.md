@@ -324,14 +324,6 @@ browser = chrome
 
 <br>
 
-<h2>🎉 Summary</h2>
-
-<p>
-Your automation environment is now fully configured.  
-You can run all test suites against your local OpenCart instance and view detailed execution reports.
-</p>
-
-
 <h2>📌 Summary</h2>
 
 <p>
